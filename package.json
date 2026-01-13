@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "build": "next build",
+    "pages:build": "npx @cloudflare/next-on-pages",
+    "preview": "npm run pages:build && wrangler pages dev .vercel/output/static",
+    "deploy": "npm run pages:build && wrangler pages deploy .vercel/output/static --project-name=blackpanther",
     "dev": "next dev",
     "lint": "eslint .",
-    "start": "next start",
-    "deploy": "npm run build && wrangler pages deploy dist --project-name=blackpanther"
+    "start": "next start"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -62,6 +64,7 @@
     "zod": "3.25.76"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.11",
     "@tailwindcss/postcss": "^4.1.9",
     "@types/node": "^22",
     "@types/react": "^19",
