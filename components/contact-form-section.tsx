@@ -3,6 +3,12 @@
 import type React from "react"
 
 import { useState } from "react"
+
+declare global {
+  interface Window {
+    fbq?: (...args: unknown[]) => void
+  }
+}
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -40,6 +46,25 @@ export function ContactFormSection() {
       })
 
       if (response.ok) {
+        // Meta Pixel: Lead event (primary conversion for ad optimization)
+        if (typeof window !== "undefined" && window.fbq) {
+          window.fbq("track", "Lead", {
+            content_name: "Formulário de Parceria B2B",
+            content_category: data.businessType,
+            value: 0,
+            currency: "BRL",
+          })
+
+          // Meta Pixel: Contact event (user initiated contact)
+          window.fbq("track", "Contact")
+
+          // Meta Pixel: SubmitApplication event (B2B partnership application)
+          window.fbq("track", "SubmitApplication", {
+            content_name: "Parceria Black Panther Pro",
+            content_category: data.businessType,
+          })
+        }
+
         setSubmitted(true)
       } else {
         console.error("[v0] Erro ao enviar formulário")
